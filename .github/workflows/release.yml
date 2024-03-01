@@ -45,7 +45,7 @@ jobs:
       if: ${{ matrix.cross}}
       run: |
         cargo install cross --git https://github.com/cross-rs/cross.git
-        cross build -p typst-cli --release --target ${{ matrix.target }} --features self-update vendor-openssl
+        cross build -p typst-cli --release --target ${{ matrix.target }} --features self-update,vendor-openssl
 
     - name: Run Cargo
       if: ${{ !matrix.cross }}
@@ -71,3 +71,14 @@ jobs:
         allowUpdates: true
         omitNameDuringUpdate: true
         omitBodyDuringUpdate: true
+
+  dispatchSnap:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Repository Dispatch
+      uses: peter-evans/repository-dispatch@v3
+      with:
+        token: ${{ secrets.SNAP_PAT }}
+        repository: typst/typst-snap
+        event-type: typst-release
+        client-payload: '{"ref": "${{ github.ref }}", "tag": "${{ github.ref_name }}"}'
