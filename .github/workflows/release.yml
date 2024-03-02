@@ -81,4 +81,4 @@ jobs:
         token: ${{ secrets.SNAP_PAT }}
         repository: typst/typst-snap
         event-type: typst-release
-        client-payload: '{"ref": "${{ github.ref }}", "tag": "${{ github.ref_name }}"}'
+        client-payload: '{"ref": "${{ github.ref }}", "tag": "${{ github.ref_name }}", "sha": "${{ github.sha }}"}'
